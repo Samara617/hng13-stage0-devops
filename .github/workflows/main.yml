@@ -1,0 +1,16 @@
+name: Validate Stage0 Files
+on: [push, pull_request]
+jobs:
+  check-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure README exists
+        run: test -f README.md
+      - name: Ensure index.html exists (if present in repo)
+        run: |
+          if [ -f index.html ]; then
+            grep -q "Welcome to DevOps Stage 0" index.html
+          else
+            echo "index.html will live on the server only."
+          fi
